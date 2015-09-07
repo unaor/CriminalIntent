@@ -29,7 +29,7 @@ public class CrimeFragment extends Fragment {
 
     private Crime mCrime;
     private EditText mTitleField;
-    private final String TAG="CrimeFragment";
+    private final String TAG = "CrimeFragment";
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
 
@@ -67,7 +67,6 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 mCrime.setTitle(charSequence.toString());
-                Log.d(TAG, "Got the following from user : " + charSequence.toString());
             }
 
             @Override

@@ -7,15 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import android.widget.Toast;
 import com.datasol.criminalintent.R;
-import com.datasol.criminalintent.activities.CrimeActivity;
+import com.datasol.criminalintent.activities.CrimePagerActivity;
 import com.datasol.criminalintent.model.Crime;
 import com.datasol.criminalintent.model.CrimeLab;
 
@@ -28,6 +28,8 @@ public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private final String TAG="CrimeListFragment";
+    int selectedPosition;
 
     @Nullable
     @Override
@@ -72,7 +74,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = CrimeActivity.newIntent(getActivity(),mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            selectedPosition = mCrimeRecyclerView.getChildLayoutPosition(view);
             startActivity(intent);
         }
     }
@@ -86,7 +89,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(CrimeHolder holder, int position) {
-           Crime crime = mCrimes.get(position);
+            Crime crime = mCrimes.get(position);
             holder.bindCrime(crime);
         }
 
@@ -111,7 +114,9 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         }
         else{
-            mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyDataSetChanged();
+            Log.d(TAG,"Proceeding to update item in position "+ selectedPosition);
+            mAdapter.notifyItemChanged(selectedPosition);
         }
 
     }
