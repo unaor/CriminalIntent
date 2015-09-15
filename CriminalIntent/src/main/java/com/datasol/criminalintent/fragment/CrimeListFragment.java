@@ -76,6 +76,7 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View view) {
             Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             selectedPosition = mCrimeRecyclerView.getChildLayoutPosition(view);
+            //TODO: now that pager exists this will not notify always about model changes.
             startActivity(intent);
         }
     }

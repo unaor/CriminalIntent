@@ -1,5 +1,7 @@
 package com.datasol.criminalintent.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import com.datasol.criminalintent.R;
 import com.datasol.criminalintent.model.Crime;
 import com.datasol.criminalintent.model.CrimeLab;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -28,11 +31,15 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_TIME = "DialogTime";
+    private static final int REQUEST_DATE = 1;
+    private static final int REQUEST_TIME = 2;
 
     private Crime mCrime;
     private EditText mTitleField;
     private final String TAG = "CrimeFragment";
     private Button mDateButton;
+    private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
 
     public static CrimeFragment newInstance(UUID crimeId){
@@ -77,13 +84,25 @@ public class CrimeFragment extends Fragment {
             }
         });
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        mDateButton.setText(DateFormat.format("EEEE,dd-MMMM,yyyy", mCrime.getDate()));
+        mTimeButton = (Button)v.findViewById(R.id.crime_time);
+        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
-                dialog.show(fm,DIALOG_DATE);
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dialog.show(fm, DIALOG_DATE);
+            }
+        });
+
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                dialog.show(fm,DIALOG_TIME);
             }
         });
 
@@ -98,4 +117,37 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG,"Inside onActivityResult");
+        if(resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if(requestCode == REQUEST_DATE){
+            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            Log.d(TAG,"Got date from date picker "+date);
+            mCrime.setDate(date);
+            updateDate();
+        }
+
+        if(requestCode == REQUEST_TIME){
+            Date date = (Date)data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            //TODO: fix date and time issue
+            Log.d(TAG,"Got date from date picker "+date);
+            //long time = mCrime.getDate().getTime();
+            //long newTime = time + date.getTime();
+            //Date newDate = new Date(newTime);
+            //mCrime.setDate(newDate);
+            updateDate();
+        }
+
+    }
+
+    private void updateDate() {
+        mDateButton.setText(DateFormat.format("EEEE,dd-MMMM,yyyy", mCrime.getDate()));
+        mTimeButton.setText(DateFormat.format("HH:mm", mCrime.getDate()));
+    }
+
+
 }
