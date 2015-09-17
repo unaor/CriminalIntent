@@ -35,12 +35,29 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
     <CheckBox android:id="@+id/crime_solved"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginLeft="16dp"
-              android:layout_marginRight="16dp"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
               android:text="@string/crime_solved_label"
-            />
+              android:layout_alignParentRight="true"
+              android:layout_weight="30"/>
+
+    <Button
+        android:id="@+id/crime_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/crime_solved"
+        android:drawableLeft="@android:drawable/ic_menu_delete"
+        android:layout_weight="70"
+        android:text="@string/delete_crime_btn" />
+    </LinearLayout>
+
+
 
 </LinearLayout>

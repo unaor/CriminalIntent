@@ -3,13 +3,18 @@ package com.datasol.criminalintent.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
 import com.datasol.criminalintent.R;
 import com.datasol.criminalintent.fragment.CrimeFragment;
+import com.datasol.criminalintent.fragment.CrimeListFragment;
 import com.datasol.criminalintent.model.Crime;
 import com.datasol.criminalintent.model.CrimeLab;
 
@@ -20,6 +25,7 @@ public class CrimePagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
+    private final String TAG="CrimePagerActivity";
     private static final String EXTRA_CRIME_ID = "com.datasol.criminalintent.crime_id";
 
     @Override
@@ -60,5 +66,13 @@ public class CrimePagerActivity extends AppCompatActivity {
         return intent;
     }
 
+    @Nullable
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        Log.d(TAG,"Inside crimePagerActivity getSupportParentActivityIntent");
+        Intent intent  = NavUtils.getParentActivityIntent(this);
+        intent.putExtra(CrimeListFragment.SAVED_SUBTITLE_VISIBLE,true);
+        return intent;
 
+    }
 }

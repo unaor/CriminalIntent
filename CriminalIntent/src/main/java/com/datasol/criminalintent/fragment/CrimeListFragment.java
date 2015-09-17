@@ -9,7 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -30,14 +35,28 @@ public class CrimeListFragment extends Fragment {
     private final String TAG="CrimeListFragment";
     int selectedPosition;
     private boolean mSubtitleVisible;
+    public static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+
+    public static Fragment newInstance(boolean mSubtitleVisible){
+        Bundle args = new Bundle();
+        args.putSerializable(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
+        CrimeListFragment fragment = new CrimeListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.fragment_crime_list,container,false);
-
+        View view = inflater.inflate(R.layout.fragment_crime_list,container,false);
+        
         mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if(savedInstanceState != null){
+            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+            Log.d(TAG,"bundle is not null showSubtitle value is " + mSubtitleVisible);
+        }
 
         updateUI();
 
@@ -48,6 +67,8 @@ public class CrimeListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mSubtitleVisible = this.getArguments().getBoolean(SAVED_SUBTITLE_VISIBLE);
+        updateSubtitle();
     }
 
     @Override
@@ -126,6 +147,8 @@ public class CrimeListFragment extends Fragment {
             mAdapter.notifyItemChanged(selectedPosition);
         }
 
+        updateSubtitle();
+
     }
 
     @Override
@@ -165,11 +188,21 @@ public class CrimeListFragment extends Fragment {
     private void updateSubtitle(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
-        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural,crimeCount,crimeCount);
         if (!mSubtitleVisible) {
             subtitle = null;
         }
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
+    }
+
+    public boolean getSubtile(){
+        return mSubtitleVisible;
     }
 }
