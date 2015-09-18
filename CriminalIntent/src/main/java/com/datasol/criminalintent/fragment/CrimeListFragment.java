@@ -132,6 +132,10 @@ public class CrimeListFragment extends Fragment {
         public int getItemCount() {
             return mCrimes.size();
         }
+
+        public void setCrimes(List<Crime> crimes){
+            crimes = crimes;
+        }
     }
 
     private void updateUI(){
@@ -142,9 +146,11 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         }
         else{
-            //mAdapter.notifyDataSetChanged();
-            Log.d(TAG,"Proceeding to update item in position "+ selectedPosition);
-            mAdapter.notifyItemChanged(selectedPosition);
+
+            Log.d(TAG, "Proceeding to update item in position " + selectedPosition);
+            mAdapter.setCrimes(crimes);
+            mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyItemChanged(selectedPosition);
         }
 
         updateSubtitle();
