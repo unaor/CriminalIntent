@@ -3,6 +3,7 @@ package com.datasol.criminalintent.activities;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.datasol.criminalintent.R;
 import com.datasol.criminalintent.fragment.CrimeListFragment;
 
 /**
@@ -17,5 +18,10 @@ public class CrimeListActivity extends SingleFragmentActivity {
         boolean showSubtitle = (boolean)getIntent().getBooleanExtra(CrimeListFragment.SAVED_SUBTITLE_VISIBLE,false);
         Log.d(TAG,"Starting new CrimeListFragment with subtitle as "+ showSubtitle);
         return CrimeListFragment.newInstance(showSubtitle);
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_masterdetail;
     }
 }
