@@ -25,7 +25,8 @@ public class CrimeBaseHelper extends SQLiteOpenHelper {
                 CrimeDbSchema.CrimeTable.Cols.UUID + ", " +
                 CrimeDbSchema.CrimeTable.Cols.TITLE + ", "+
                 CrimeDbSchema.CrimeTable.Cols.DATE + ", "+
-                CrimeDbSchema.CrimeTable.Cols.SOLVED + ")");
+                CrimeDbSchema.CrimeTable.Cols.SOLVED + "," +
+                CrimeDbSchema.CrimeTable.Cols.SUSPECT +")");
         Log.d(TAG, "Created db for first time");
     }
 
