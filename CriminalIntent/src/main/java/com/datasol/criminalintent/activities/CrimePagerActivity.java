@@ -21,7 +21,7 @@ import com.datasol.criminalintent.model.CrimeLab;
 import java.util.List;
 import java.util.UUID;
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity implements CrimeFragment.Callbacks {
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
@@ -73,6 +73,11 @@ public class CrimePagerActivity extends AppCompatActivity {
         Intent intent  = NavUtils.getParentActivityIntent(this);
         intent.putExtra(CrimeListFragment.SAVED_SUBTITLE_VISIBLE,true);
         return intent;
+
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
 
     }
 }
